@@ -13,9 +13,9 @@ using Xunit;
 
 namespace Microsoft.AspNetCore.Mvc.FunctionalTests
 {
-    public class TempDataTest : IClassFixture<MvcTestFixture<BasicWebSite.Startup>>
+    public class TempDataWithCookieTempDataProviderTest : IClassFixture<MvcTestFixture<BasicWebSite.StartupWithCookieTempDataProvider>>
     {
-        public TempDataTest(MvcTestFixture<BasicWebSite.Startup> fixture)
+        public TempDataWithCookieTempDataProviderTest(MvcTestFixture<BasicWebSite.StartupWithCookieTempDataProvider> fixture)
         {
             Client = fixture.Client;
         }
@@ -179,7 +179,10 @@ namespace Microsoft.AspNetCore.Mvc.FunctionalTests
             if (response.Headers.TryGetValues("Set-Cookie", out values))
             {
                 var cookie = SetCookieHeaderValue.ParseList(values.ToList()).First();
-                request.Headers.Add("Cookie", new CookieHeaderValue(cookie.Name, cookie.Value).ToString());
+                if (cookie.Expires == null || cookie.Expires >= DateTimeOffset.Now)
+                {
+                    request.Headers.Add("Cookie", new CookieHeaderValue(cookie.Name, cookie.Value).ToString());
+                }
             }
 
             return request;
