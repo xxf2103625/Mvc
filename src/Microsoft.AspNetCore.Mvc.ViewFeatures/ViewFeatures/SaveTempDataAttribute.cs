@@ -15,7 +15,7 @@ namespace Microsoft.AspNetCore.Mvc.ViewFeatures
     public class SaveTempDataAttribute : Attribute, IFilterFactory, IOrderedFilter
     {
         /// <inheritdoc />
-        public int Order { get; set; }
+        public int Order { get; set; } = int.MinValue + 100;
 
         /// <inheritdoc />
         public bool IsReusable => true;

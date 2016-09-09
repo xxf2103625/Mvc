@@ -68,5 +68,17 @@ namespace BasicWebSite.Controllers
             var value5 = (Guid)TempData["key5"];
             return $"{value1} {value2.ToString()} {value3.Count.ToString()} {value4.ToString()} {value5.ToString()}";
         }
+
+        [HttpGet]
+        public IActionResult SetTempDataInActionResult()
+        {
+            return new TestTempDataActionResult();
+        }
+
+        [HttpGet]
+        public string GetTempDataInActionResult()
+        {
+            return TempData["Name"]?.ToString();
+        }
     }
 }
